@@ -1,8 +1,13 @@
 import connection from '../config/connection.js';
+import qryGet from '../sql-queries/select/qryGet.js';
 
+const tableName = 'users';
 const User = {
   getAll: async () => {
-    const [rows] = await connection.query('SELECT * FROM users');
+    const [query, replacements] = qryGet({
+      table: [tableName],
+    });
+    const [rows] = await connection.query(query, replacements);
     return rows;
   },
   getById: (id) => {
@@ -10,6 +15,11 @@ const User = {
   },
   create: (user) => {
     const { username, password, email } = user;
+    // const [query, replacements] = qryGet({
+    //   table: [`leads l`, `program p ON (p.id = l.programid)`],
+    //   column: `p.SupplementalTableName`,
+    //   where: [[`l.id`, `=`, leadID]],
+    // });
     const [result] = connection.query(
       'INSERT INTO users (username, password, email) VALUES (?, ?, ?)',
       [username, password, email],

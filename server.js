@@ -1,9 +1,10 @@
 import app from './app.js';
-import db from './models/db.js';
+import connection from './config/connection.js';
 
 const PORT = process.env.PORT || 3003;
 
-db.getConnection()
+connection
+  .getConnection()
   .then(() => {
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
